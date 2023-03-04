@@ -1,19 +1,17 @@
 import PyPDF2
 
 
-class Parser:
-    def __init__(self, filename):
-        paper = open(filename, 'rb')
-        self.paper = PyPDF2.PdfFileReader(paper)
+def get_text_from_pdf(filename):
+    file = open(filename, 'rb')
+    paper = PyPDF2.PdfReader(file)
+    pdf_text = []
+    num_pages = len(paper.pages)
+    for i in range(0, num_pages):
+        page = paper.pages[i]
+        text = page.extract_text()
+        pdf_text.append(text)
 
-    def get_text(self):
-        pdf_text = []
-        for i in range(0, self.paper.numPages):
-            page = self.paper.getPage(i)
-            text = page.extract_text()
-            pdf_text.append(text)
-
-        return pdf_text
-
+    file.close()
+    return pdf_text
 
 
