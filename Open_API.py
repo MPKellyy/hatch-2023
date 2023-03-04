@@ -1,11 +1,9 @@
 import openai
 import re
 import os
-#import load_dotenv from dotenv
 import requests
 from parser import *
 
-#load_dotenv()
 
 # Set up the OpenAI API credentials
 openai.api_key = "INSERT KEY"
@@ -13,6 +11,11 @@ openai.api_key = "INSERT KEY"
 
 def summarize_paper(input_text):
     prompt = f"Translate the following scientific text into simple terms:\n\n{input_text}\n\nTranslation:"
+    return translate_text(prompt)
+
+
+def convert_to_tweet(input_text):
+    prompt = f"Turn the following text into a tweet under 280 characters:\n\n{input_text}\n\nTranslation:"
     return translate_text(prompt)
 
 
@@ -37,20 +40,28 @@ def translate_text(prompt):
     return translated_text
 
 
-def simplify_paper_test():
-    #################################################
+def display_response_to_console(response):
+    response = re.findall(r"[^.!?]+[.!?]", response)
+
+    for sentence in response:
+        print(sentence)
+
+
+def summarize_paper_test():
     # Wang_QC_Recognition_of_camouflage_targets_with_hyper-spectral_polarization_imaging_system.pdf
     # Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf
-    # response = translate_text("My name is Michael. I am a college student. My favorite color is green.")
     pdf = get_text_from_pdf("Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf")
 
     for page in pdf:
         response = summarize_paper(page)
-        response = response.split(". ")
-        for sentence in response:
-            if sentence[len(sentence) - 1] != ".":
-                sentence += "."
-            print(sentence)
-        print("\n")
-    #################################################
+        display_response_to_console(response)
+
+
+def convert_to_tweet_test():
+    response = convert_to_tweet(get_text_from_pdf("meeting_notes.pdf"))
+    display_response_to_console(response)
+
+
+# summarize_paper_test()
+convert_to_tweet_test()
 
