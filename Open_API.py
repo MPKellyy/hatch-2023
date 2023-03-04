@@ -9,13 +9,18 @@ from parser import *
 openai.api_key = "INSERT KEY"
 
 
+def find_terms_paper(input_text):
+    prompt = f"Find key terms in this text (if any) and define them:\n\n{input_text}\n\nTranslation:"
+    return translate_text(prompt)
+
+
 def summarize_paper(input_text):
     prompt = f"Translate the following scientific text into simple terms:\n\n{input_text}\n\nTranslation:"
     return translate_text(prompt)
 
 
-def convert_to_tweet(input_text):
-    prompt = f"Turn the following text into a tweet under 280 characters:\n\n{input_text}\n\nTranslation:"
+def convert_to_post(media_name, input_text):
+    prompt = f"Turn the following text into a {media_name} post:\n\n{input_text}\n\nTranslation:"
     return translate_text(prompt)
 
 
@@ -41,27 +46,37 @@ def translate_text(prompt):
 
 
 def display_response_to_console(response):
-    response = re.findall(r"[^.!?]+[.!?]", response)
+    response = re.findall(r"[^:.!?]+[:.!?]", response)
 
     for sentence in response:
         print(sentence)
 
 
-def summarize_paper_test():
-    # Wang_QC_Recognition_of_camouflage_targets_with_hyper-spectral_polarization_imaging_system.pdf
-    # Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf
-    pdf = get_text_from_pdf("Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf")
+def summarize_paper_test(filename):
+    pdf = get_text_from_pdf(filename)
 
     for page in pdf:
         response = summarize_paper(page)
         display_response_to_console(response)
+        print("")
 
 
-def convert_to_tweet_test():
-    response = convert_to_tweet(get_text_from_pdf("meeting_notes.pdf"))
+def convert_to_post_test(filename):
+    social_media = ["twitter", "instagram", "facebook", "linkedin"]
+
+    for platform in social_media:
+        print(platform + ":")
+        response = convert_to_post(platform, get_text_from_pdf(filename)[0])
+        display_response_to_console(response)
+
+
+def find_key_terms_paper_test(filename):
+    response = find_terms_paper(get_text_from_pdf(filename)[0])
     display_response_to_console(response)
 
 
-# summarize_paper_test()
-convert_to_tweet_test()
+# summarize_paper_test("Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf")
+# convert_to_post_test("meeting_notes.pdf")
+# find_key_terms_paper_test("meeting_notes.pdf")
+# print(convert_to_post("facebook", "My birthday"))
 
