@@ -3,20 +3,24 @@ import re
 import os
 #import load_dotenv from dotenv
 import requests
+from parser import *
 
 #load_dotenv()
 
 # Set up the OpenAI API credentials
-openai.api_key = os.getenv("key")
+openai.api_key = "INSERT KEY"
+
+
+def summarize_paper(input_text):
+    prompt = f"Translate the following scientific text into simple terms:\n\n{input_text}\n\nTranslation:"
+    return translate_text(prompt)
+
 
 # Define a function to translate text
-"""
-def translate_text(input_text):
-    # Define the prompt for the API request
-    prompt = f"Translate the following scientific text into simple terms:\n\n{input_text}\n\nTranslation:"
+def translate_text(prompt):
     # Send the prompt to the API and get the response
     response = openai.Completion.create(
-        engine="davinci",
+        engine="text-davinci-003",
         prompt=prompt,
         max_tokens=1024,
         n=1,
@@ -31,28 +35,22 @@ def translate_text(input_text):
     translated_text = re.sub(' +', ' ', translated_text)
     # Return the translated text
     return translated_text
-    """
 
 
-def api_test():
-    # Set up the API endpoint URL and your API key
-    url = "https://api.openai.com/v1/engine/chat/generic"
-    api_key = openai.api_key
+def simplify_paper_test():
+    #################################################
+    # Wang_QC_Recognition_of_camouflage_targets_with_hyper-spectral_polarization_imaging_system.pdf
+    # Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf
+    # response = translate_text("My name is Michael. I am a college student. My favorite color is green.")
+    pdf = get_text_from_pdf("Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf")
 
-    # Set up the request headers with the API key
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}",
-    }
-
-    # Set up the request body with the message you want to generate a response for
-    data = {
-        "prompt": "Hello, how are you?",
-        "temperature": 0.5,
-        "max_tokens": 16,
-    }
-
-    # Make the API request and print the response
-    response = requests.post(url, headers=headers, json=data)
-    print(response.json())
+    for page in pdf:
+        response = summarize_paper(page)
+        response = response.split(". ")
+        for sentence in response:
+            if sentence[len(sentence) - 1] != ".":
+                sentence += "."
+            print(sentence)
+        print("\n")
+    #################################################
 
