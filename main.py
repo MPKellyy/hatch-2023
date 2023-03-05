@@ -15,7 +15,5 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
-    print(Open_API.translate_text("explain quantum computing to a kindergartener"))
-    #Open_API.api_test()
+    print(Open_API.generate_script("quantum computing and polaris from polaris"))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
