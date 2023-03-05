@@ -6,7 +6,7 @@ from parser import *
 
 
 # Set up the OpenAI API credentials
-openai.api_key = "INSERT KEY"
+openai.api_key = "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"
 
 
 def find_terms_paper(input_text):
@@ -80,3 +80,19 @@ def find_key_terms_paper_test(filename):
 # find_key_terms_paper_test("meeting_notes.pdf")
 # print(convert_to_post("facebook", "My birthday"))
 
+
+def generate_text_on_topic(topic, modifier):
+    prompt = f"Explain {topic} to me {modifier}."
+    return translate_text(prompt)
+
+
+def generate_social_media_post(post_type, topic):
+    prompt = f"Write me a moderately sized {post_type} about {topic} with detail."
+    return translate_text(prompt)
+
+
+def generate_script(topic):
+    prompt = f"Write me a presentation script about {topic} in detail with explanations."
+    return translate_text(prompt)
+
+#generate email
