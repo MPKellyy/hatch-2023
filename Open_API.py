@@ -2,7 +2,8 @@ import openai
 import re
 import os
 import requests
-from parser import *
+
+import parsingPDF
 
 
 # Set up the OpenAI API credentials
@@ -11,7 +12,7 @@ def set_key(key):
     return "Key Entered."
 
 def find_terms_paper(filename):
-    pdf = get_text_from_pdf(filename)
+    pdf = parsingPDF.get_text_from_pdf(filename)
 
     output_text = ""
     for page in pdf:
@@ -24,7 +25,7 @@ def find_terms_paper(filename):
 
 
 def summarize_paper(filename):
-    pdf = get_text_from_pdf(filename)
+    pdf = parsingPDF.get_text_from_pdf(filename)
 
     output_text = ""
     for page in pdf:
@@ -36,7 +37,7 @@ def summarize_paper(filename):
 
 
 def convert_to_post(media_name, filename):
-    pdf = get_text_from_pdf(filename)
+    pdf = parsingPDF.get_text_from_pdf(filename)
 
     output_text = ""
     for page in pdf:
