@@ -47,6 +47,8 @@ class OptionFrame:
     def make_tab(self, tab_name, widget_text, function_name, options=None, need_input=False, need_upload=False):
         # Create a frame for the second tab
         frame = tk.Frame(self.notebook)
+        frame.grid_columnconfigure(0, weight=1)
+        frame.grid_columnconfigure(1, weight=1)
         self.notebook.add(frame, text=tab_name)
 
         # Add widgets to the second tab
@@ -78,7 +80,7 @@ class OptionFrame:
 #
         if need_upload:
             upload_button = tk.Button(frame, text="Open File", command=self.update_filepath)
-            upload_button.grid(row=1, column=0, pady=2)
+            upload_button.grid(row=1, column=0, pady=2, columnspan=frame.grid_size()[0])
             button = tk.Button(frame, text="Lets go!",
                                command=lambda: self.pdf_output(self.filepath, frame, function_name))
 
