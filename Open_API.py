@@ -6,7 +6,7 @@ from parser import *
 
 
 # Set up the OpenAI API credentials
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 def find_terms_paper(input_text):
