@@ -19,6 +19,9 @@ class OptionFrame:
         elif function_name == "generate_social_media_post":
             label = tk.Label(frame, text=Open_API.generate_social_media_post(dropdown_entry.get(), text_entry.get()),
                              wraplength=frame.winfo_width() - frame.winfo_width()/10, justify="center")
+        else:  # generate script
+            label = tk.Label(frame, text=Open_API.generate_script(text_entry.get()),
+                             wraplength=frame.winfo_width() - frame.winfo_width() / 10, justify="center")
 
         if frame.grid_slaves(3, 0).__len__() != 0:
             temp = frame.grid_slaves(3, 0)[0]
@@ -109,12 +112,14 @@ class OptionFrame:
         # TODO Make options for tab 2? -> DONE
         self.make_tab("Generate Social Media Post", "Write me a social media post about",
                       function_name="generate_social_media_post", options=options2, need_input=True)
+        self.make_tab("Generate Presentation Script", "Write me a script for a presentation on",
+                      function_name="generate_script", need_input=True)
         self.make_tab("Convert to Social Media Post", "Convert document to a media post",
                       function_name="convert_to_post", need_upload=True)
         self.make_tab("Summarize Paper", "Recap the contents of", function_name="summarize_paper", need_upload=True)
         self.make_tab("Key Terms in Paper", "Find and define key terms in", function_name="find_terms_paper",
                       need_upload=True)
-        # TODO add script generation
+        # TODO add script generation -> DONE
 
 
 root = tk.Tk()
