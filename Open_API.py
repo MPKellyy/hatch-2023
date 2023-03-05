@@ -9,18 +9,29 @@ from parser import *
 openai.api_key = "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"
 
 
-def find_terms_paper(input_text):
+def find_terms_paper(filename):
+    input_text = ""
+    for page in get_text_from_pdf(filename):
+        input_text += page + " "
     prompt = f"Find key terms in this text (if any) and define them:\n\n{input_text}\n\nTranslation:"
     return translate_text(prompt)
 
 
-def summarize_paper(input_text):
+def summarize_paper(filename):
+    input_text = ""
+    for page in get_text_from_pdf(filename):
+        input_text += page + " "
     prompt = f"Translate the following scientific text into simple terms:\n\n{input_text}\n\nTranslation:"
     return translate_text(prompt)
 
 
-def convert_to_post(media_name, input_text):
-    prompt = f"Turn the following text into a {media_name} post:\n\n{input_text}\n\nTranslation:"
+def convert_to_post(filename):
+    input_text = ""
+    for page in get_text_from_pdf(filename):
+        input_text += page + " "
+    # prompt = f"Turn the following text into a {media_name} post:\n\n{input_text}\n\nTranslation:"
+    # TODO revisit this
+    prompt = f"Turn the following text into a social media post:\n\n{input_text}\n\nTranslation:"
     return translate_text(prompt)
 
 
@@ -61,18 +72,19 @@ def summarize_paper_test(filename):
         print("")
 
 
-def convert_to_post_test(filename):
-    social_media = ["twitter", "instagram", "facebook", "linkedin"]
+# def convert_to_post_test(filename):
+    # social_media = ["twitter", "instagram", "facebook", "linkedin"]
 
-    for platform in social_media:
-        print(platform + ":")
-        response = convert_to_post(platform, get_text_from_pdf(filename)[0])
-        display_response_to_console(response)
+    # for platform in social_media:
+        # print(platform + ":")
+        # response = convert_to_post(platform, get_text_from_pdf(filename)[0])
+        # display_response_to_console(response)
 
 
 def find_key_terms_paper_test(filename):
     response = find_terms_paper(get_text_from_pdf(filename)[0])
     display_response_to_console(response)
+    return translate_text(response)
 
 
 # summarize_paper_test("Zhai_H_Infrared_polarization_detection_method_for_weak_target_in_sky_background.pdf")

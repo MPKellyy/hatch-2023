@@ -9,15 +9,30 @@ class optionFrame:
     def __init__(self, r):
         self.root = r
 
-    def show_output(self, text_entry, dropdown_entry, frame):
-        print("done")
-        label1_2 = tk.Label(frame, text=Open_API.generate_text_on_topic(text_entry.get(), dropdown_entry.get()))
-        label1_2.pack(pady=10)
+        self.filepath = ""
 
-    def get_file(self):
-        filename = askopenfilename()
+    def nonpdf_output(self, text_entry, dropdown_entry, frame, function_name):
+        if function_name == "generate_text_on_topic":
+            label = tk.Label(frame, text=Open_API.generate_text_on_topic(text_entry.get(), dropdown_entry.get()))
+        elif function_name == "generate_social_media_post":
+            label = tk.Label(frame, text=Open_API.generate_social_media_post(dropdown_entry.get(), text_entry.get()))
 
-    def make_tab(self, tab_name, widget_text, options=None, need_input=False, need_upload=False):
+        label.pack(pady=10)
+
+    def pdf_output(self, frame, function_name):
+        if function_name == "find_terms_paper":
+            label = tk.Label(frame, text=Open_API.find_terms_paper(self.filepath))
+        elif function_name == "summarize_paper":
+            label = tk.Label(frame, text=Open_API.summarize_paper(self.filepath))
+        elif function_name == "convert_to_post":
+            label = tk.Label(frame, text=Open_API.convert_to_post(self.filepath))
+
+        label.pack(pady=10)
+
+    def update_filepath(self):
+        self.filepath = askopenfilename()
+
+    def make_tab(self, tab_name, widget_text, function_name, options=None, need_input=False, need_upload=False):
         # Create a frame for the second tab
         frame = tk.Frame(self.notebook)
         self.notebook.add(frame, text=tab_name)
@@ -38,11 +53,15 @@ class optionFrame:
             dropdown.pack()
 
         if need_upload:
-            upload_button = tk.Button(frame, text="Open File", command=self.get_file)
+            upload_button = tk.Button(frame, text="Open File", command=self.update_filepath)
             upload_button.pack()
+            button = tk.Button(frame, text="Lets go!",
+                               command=lambda: self.pdf_output(self.filepath, frame, function_name))
 
-        button = tk.Button(frame, text="Lets go!", command=lambda: self.show_output(user_entry,
-                                                                                     dropdown_text, frame))
+        if need_upload is False:
+            button = tk.Button(frame, text="Lets go!", command=lambda: self.nonpdf_output(user_entry, dropdown_text,
+                                                                                    frame, function_name))
+
         button.pack(pady=10)
 
     def construct(self):
@@ -55,11 +74,17 @@ class optionFrame:
             "in detail with definitions.",
             "to me like I'm a kindergartener."
         ]
-        self.make_tab("Generate Information", "Explain", options, need_input=True)
-        self.make_tab("Generate Social Media Post", "Write me a post about", need_input=True)
-        self.make_tab("Convert to Social Media Post", "Convert document to a post for", need_upload=True)
-        self.make_tab("Summarize Paper", "Recap the contents of", need_upload=True)
-        self.make_tab("Key Terms in Paper", "Find and define key terms in", need_upload=True)
+        self.make_tab("Generate Information", "Explain", function_name="generate_text_on_topic", options=options,
+                      need_input=True)
+        # TODO Make options for tab 2?
+        self.make_tab("Generate Social Media Post", "Write me a post about", function_name="generate_social_media_post",
+                      need_input=True)
+        self.make_tab("Convert to Social Media Post", "Convert document to a media post",
+                      function_name="convert_to_post", need_upload=True)
+        self.make_tab("Summarize Paper", "Recap the contents of", function_name="summarize_paper", need_upload=True)
+        self.make_tab("Key Terms in Paper", "Find and define key terms in", function_name="find_terms_paper",
+                      need_upload=True)
+        # TODO add script generation
 
 root = tk.Tk()
 
