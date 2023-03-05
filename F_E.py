@@ -120,11 +120,3 @@ class OptionFrame:
         self.make_tab("Key Terms in Paper", "Find and define key terms in", function_name="find_terms_paper",
                       need_upload=True)
         # TODO add script generation -> DONE
-
-
-root = tk.Tk()
-
-o = OptionFrame(root)
-o.construct()
-
-root.mainloop()

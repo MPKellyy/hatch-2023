@@ -1,19 +1,16 @@
-# This is a sample Python script.
-import Open_API
+import F_E
+import tkinter as tk
 
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+
-    print("Hello Branch! -Robert")
-
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-    print(Open_API.generate_script("quantum computing and polaris from polaris"))
+    root = tk.Tk()
+
+    o = F_E.OptionFrame(root)
+    o.construct()
+
+    root.mainloop()
 
