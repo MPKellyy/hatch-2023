@@ -13,7 +13,10 @@ class OptionFrame:
         self.filepath = ""
 
     def nonpdf_output(self, text_entry, dropdown_entry, frame, function_name):
-        if function_name == "generate_text_on_topic":
+        if function_name == "set_key":
+            label = tk.Label(frame, text=Open_API.set_key(text_entry.get()),
+                             wraplength=frame.winfo_width() - frame.winfo_width() / 10, justify="center")
+        elif function_name == "generate_text_on_topic":
             label = tk.Label(frame, text=Open_API.generate_text_on_topic(text_entry.get(), dropdown_entry.get()),
                              wraplength=frame.winfo_width() - frame.winfo_width()/10, justify="center")
         elif function_name == "generate_social_media_post":
@@ -109,6 +112,7 @@ class OptionFrame:
             "linked-in post"
         ]
 
+        self.make_tab("Open AI API Key", "Enter your key:", function_name="set_key", need_input=True)
         self.make_tab("Generate Information", "Explain", function_name="generate_text_on_topic", options=options1,
                       need_input=True)
         # TODO Make options for tab 2? -> DONE

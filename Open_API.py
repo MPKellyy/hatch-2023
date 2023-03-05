@@ -6,8 +6,9 @@ from parser import *
 
 
 # Set up the OpenAI API credentials
-openai.api_key = ""
-
+def set_key(key):
+    openai.api_key = key
+    return "Key Entered."
 
 def find_terms_paper(filename):
     input_text = ""
@@ -38,21 +39,25 @@ def convert_to_post(filename):
 # Define a function to translate text
 def translate_text(prompt):
     # Send the prompt to the API and get the response
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        temperature=0.7,
-    )
-    # Extract the translated text from the response
-    translated_text = response.choices[0].text
-    # Clean up the translated text by removing any leading/trailing whitespace and line breaks
-    translated_text = translated_text.strip().replace('\n', ' ')
-    # Remove any extra white space in the text
-    translated_text = re.sub(' +', ' ', translated_text)
-    # Return the translated text
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=1024,
+            n=1,
+            stop=None,
+            temperature=0.7,
+        )
+        # Extract the translated text from the response
+        translated_text = response.choices[0].text
+        # Clean up the translated text by removing any leading/trailing whitespace and line breaks
+        translated_text = translated_text.strip().replace('\n', ' ')
+        # Remove any extra white space in the text
+        translated_text = re.sub(' +', ' ', translated_text)
+        # Return the translated text
+    except:
+        translated_text = "Please check your API key for correctness. " \
+                          "\nIf you need a key, go to: https://platform.openai.com/account/api-keys"
     return translated_text
 
 
