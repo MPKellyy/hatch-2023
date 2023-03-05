@@ -34,15 +34,16 @@ class OptionFrame:
         else:
             label.grid(row=3, column=0, padx=frame.winfo_width()/20, pady=2, columnspan=frame.grid_size()[0])
 
-    def pdf_output(self, frame, function_name):
+    def pdf_output(self, frame, function_name, dropdown_entry):
         if function_name == "find_terms_paper":
-            label = tk.Label(frame, text=Open_API.find_terms_paper(self.filepath))
+            label = tk.Label(frame, text=Open_API.find_terms_paper(self.filepath), wraplength=frame.winfo_width() - frame.winfo_width()/10, justify="center")
         elif function_name == "summarize_paper":
-            label = tk.Label(frame, text=Open_API.summarize_paper(self.filepath))
-        elif function_name == "convert_to_post":
-            label = tk.Label(frame, text=Open_API.convert_to_post(self.filepath))
+            label = tk.Label(frame, text=Open_API.summarize_paper(self.filepath), wraplength=frame.winfo_width() - frame.winfo_width()/10, justify="center")
+        else:
+            label = tk.Label(frame, text=Open_API.convert_to_post(dropdown_entry, self.filepath), wraplength=frame.winfo_width() - frame.winfo_width()/10, justify="center")
 
-        label.pack(pady=10)
+        label.grid(row=3, column=0, padx=frame.winfo_width() / 20, pady=2, columnspan=frame.grid_size()[0])
+
 
     def update_filepath(self):
         self.filepath = askopenfilename()
@@ -71,7 +72,9 @@ class OptionFrame:
         if options is not None:
             dropdown_text.set(options[0]) # default
             dropdown = tk.OptionMenu(frame, dropdown_text, *options)
-            if frame.grid_slaves(1, 0).__len__() != 0:
+            if tab_name == "Convert to Social Media Post":
+                dropdown.grid(row=0, column=1, pady=2, sticky="W")
+            elif frame.grid_slaves(1, 0).__len__() != 0:
                 dropdown.grid(row=1, column=1, pady=2, sticky="W")
             else:
                 dropdown.grid(row=1, column=0, pady=2, columnspan=frame.grid_size()[0])
@@ -85,7 +88,7 @@ class OptionFrame:
             upload_button = tk.Button(frame, text="Open File", command=self.update_filepath)
             upload_button.grid(row=1, column=0, pady=2, columnspan=frame.grid_size()[0])
             button = tk.Button(frame, text="Lets go!",
-                               command=lambda: self.pdf_output(self.filepath, frame, function_name))
+                               command=lambda: self.pdf_output(frame, function_name, dropdown_text))
 
         else:
             button = tk.Button(frame, text="Lets go!", command=lambda: self.nonpdf_output(user_entry, dropdown_text,
@@ -121,7 +124,7 @@ class OptionFrame:
         self.make_tab("Generate Presentation Script", "Write me a script for a presentation on",
                       function_name="generate_script", need_input=True)
         self.make_tab("Convert to Social Media Post", "Convert document to a media post",
-                      function_name="convert_to_post", need_upload=True)
+                      function_name="convert_to_post", need_upload=True, options=options2)
         self.make_tab("Summarize Paper", "Recap the contents of", function_name="summarize_paper", need_upload=True)
         self.make_tab("Key Terms in Paper", "Find and define key terms in", function_name="find_terms_paper",
                       need_upload=True)

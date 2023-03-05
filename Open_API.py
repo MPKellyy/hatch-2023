@@ -11,29 +11,40 @@ def set_key(key):
     return "Key Entered."
 
 def find_terms_paper(filename):
-    input_text = ""
-    for page in get_text_from_pdf(filename):
-        input_text += page + " "
-    prompt = f"Find key terms in this text (if any) and define them:\n\n{input_text}\n\nTranslation:"
-    return translate_text(prompt)
+    pdf = get_text_from_pdf(filename)
+
+    output_text = ""
+    for page in pdf:
+        prompt = f"Find key terms in this text (if any) and define them:\n\n{page}\n\nTranslation:"
+        response = translate_text(prompt)
+        output_text += response + " "
+
+    print(output_text)
+    return output_text
 
 
 def summarize_paper(filename):
-    input_text = ""
-    for page in get_text_from_pdf(filename):
-        input_text += page + " "
-    prompt = f"Translate the following scientific text into simple terms:\n\n{input_text}\n\nTranslation:"
-    return translate_text(prompt)
+    pdf = get_text_from_pdf(filename)
+
+    output_text = ""
+    for page in pdf:
+        prompt = f"Translate the following scientific text into simple terms:\n\n{page}\n\nTranslation:"
+        response = translate_text(prompt)
+        output_text += response + " "
+    print(output_text)
+    return output_text
 
 
-def convert_to_post(filename):
-    input_text = ""
-    for page in get_text_from_pdf(filename):
-        input_text += page + " "
-    # prompt = f"Turn the following text into a {media_name} post:\n\n{input_text}\n\nTranslation:"
-    # TODO revisit this
-    prompt = f"Turn the following text into a social media post:\n\n{input_text}\n\nTranslation:"
-    return translate_text(prompt)
+def convert_to_post(media_name, filename):
+    pdf = get_text_from_pdf(filename)
+
+    output_text = ""
+    for page in pdf:
+        prompt = f"Turn the following text into a {media_name} post:\n\n{page}\n\nTranslation:"
+        response = translate_text(prompt)
+        output_text += response + " "
+    print(output_text)
+    return output_text
 
 
 # Define a function to translate text
@@ -73,8 +84,8 @@ def summarize_paper_test(filename):
 
     for page in pdf:
         response = summarize_paper(page)
-        display_response_to_console(response)
-        print("")
+        # display_response_to_console(response)
+        # print("")
 
 
 # def convert_to_post_test(filename):
